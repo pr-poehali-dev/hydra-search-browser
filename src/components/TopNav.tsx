@@ -13,7 +13,7 @@ const TopNav: React.FC = () => {
       style={{
         background: 'rgba(10,10,10,0.85)',
         backdropFilter: 'blur(40px)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
       }}
     >
       <button onClick={() => setCurrentPage('home')} className="flex-shrink-0">
@@ -33,13 +33,13 @@ const TopNav: React.FC = () => {
             onClick={() => setCurrentPage('account')}
             className="flex items-center gap-2 ml-2 px-3 py-1.5 rounded-xl transition-all duration-200"
             style={{
-              background: currentPage === 'account' ? 'rgba(74,158,255,0.15)' : 'rgba(255,255,255,0.05)',
-              border: `1px solid ${currentPage === 'account' ? 'rgba(74,158,255,0.3)' : 'rgba(255,255,255,0.08)'}`,
+              background: currentPage === 'account' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)',
+              border: `1px solid ${currentPage === 'account' ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.1)'}`,
             }}
           >
             <div
               className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-golos font-semibold"
-              style={{ background: '#4a9eff', color: '#0a0a0a' }}
+              style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', color: 'white' }}
             >
               {user.username[0].toUpperCase()}
             </div>
@@ -50,8 +50,9 @@ const TopNav: React.FC = () => {
             onClick={() => setCurrentPage('auth')}
             className="ml-2 px-4 py-1.5 rounded-xl text-sm font-golos font-medium transition-all duration-200"
             style={{
-              background: '#4a9eff',
-              color: '#0a0a0a',
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.22)',
+              color: 'white',
             }}
           >
             Войти
@@ -76,8 +77,9 @@ const NavBtn: React.FC<{
       title={label}
       className="p-2 rounded-xl transition-all duration-200"
       style={{
-        background: active ? 'rgba(74,158,255,0.12)' : 'transparent',
-        color: active ? '#4a9eff' : 'rgba(255,255,255,0.5)',
+        background: active ? 'rgba(255,255,255,0.1)' : 'transparent',
+        color: active ? 'white' : 'rgba(255,255,255,0.45)',
+        border: active ? '1px solid rgba(255,255,255,0.18)' : '1px solid transparent',
       }}
       onMouseEnter={e => {
         if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)';

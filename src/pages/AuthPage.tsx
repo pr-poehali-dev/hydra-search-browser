@@ -88,7 +88,7 @@ const AuthPage: React.FC = () => {
         <div style={{
           position: 'absolute', width: '500px', height: '500px',
           top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(74,158,255,0.05) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%)',
         }} />
       </div>
 
@@ -137,8 +137,8 @@ const AuthPage: React.FC = () => {
               />
               {form.username && (
                 <div className="mt-1.5 flex items-center gap-1.5">
-                  <Icon name="Mail" size={12} style={{ color: 'rgba(74,158,255,0.6)' }} />
-                  <span className="font-mono text-xs" style={{ color: 'rgba(74,158,255,0.7)' }}>{hydMailPreview}</span>
+                  <Icon name="Mail" size={12} style={{ color: 'rgba(255,255,255,0.45)' }} />
+                  <span className="font-mono text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{hydMailPreview}</span>
                 </div>
               )}
             </div>
@@ -204,8 +204,9 @@ const AuthPage: React.FC = () => {
             disabled={loading}
             className="w-full py-3 rounded-xl font-golos font-medium text-sm transition-all duration-200 mt-2"
             style={{
-              background: loading ? 'rgba(74,158,255,0.3)' : '#4a9eff',
-              color: '#0a0a0a',
+              background: loading ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.12)',
+              border: '1px solid rgba(255,255,255,0.22)',
+              color: 'white',
               cursor: loading ? 'not-allowed' : 'pointer',
             }}
           >
@@ -213,7 +214,7 @@ const AuthPage: React.FC = () => {
               <div className="flex items-center justify-center gap-2">
                 <div
                   className="w-4 h-4 rounded-full border-2 border-transparent animate-spin"
-                  style={{ borderTopColor: '#0a0a0a' }}
+                  style={{ borderTopColor: 'white' }}
                 />
                 {mode === 'login' ? 'Входим...' : 'Создаём...'}
               </div>

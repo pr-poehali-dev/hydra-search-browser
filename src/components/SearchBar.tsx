@@ -66,17 +66,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ variant = 'hero', onSearch, initi
       <div
         className="relative flex items-center transition-all duration-300"
         style={{
-          background: focused ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.04)',
-          border: `1px solid ${focused ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)'}`,
+          background: focused ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+          border: `1px solid ${focused ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.1)'}`,
           borderRadius: showSuggestions && allSuggestions.length > 0 ? '16px 16px 0 0' : '16px',
-          boxShadow: focused ? '0 0 40px rgba(74,158,255,0.08)' : 'none',
+          boxShadow: focused ? '0 0 0 1px rgba(255,255,255,0.05)' : 'none',
         }}
       >
         <Icon
           name="Search"
           size={isHero ? 20 : 16}
           className="ml-4 flex-shrink-0"
-          style={{ color: focused ? '#4a9eff' : 'rgba(255,255,255,0.35)' }}
+          style={{ color: focused ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.35)' }}
         />
         <input
           ref={inputRef}
@@ -86,7 +86,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ variant = 'hero', onSearch, initi
           onBlur={() => { setTimeout(() => { setFocused(false); setShowSuggestions(false); }, 150); }}
           onKeyDown={handleKey}
           placeholder={isHero ? 'Поиск по всему интернету...' : 'Поиск...'}
-          className="flex-1 bg-transparent outline-none font-golos text-white placeholder:text-white/30"
+          className="flex-1 bg-transparent outline-none font-golos text-white placeholder:text-white/25"
           style={{ padding: isHero ? '16px 12px' : '10px 10px', fontSize: isHero ? '16px' : '14px' }}
         />
         {value && (
@@ -101,15 +101,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ variant = 'hero', onSearch, initi
           onClick={() => handleSubmit()}
           className="mr-2 px-4 py-2 rounded-xl font-golos font-medium text-sm transition-all duration-200 flex-shrink-0"
           style={{
-            background: 'rgba(74,158,255,0.15)',
-            border: '1px solid rgba(74,158,255,0.3)',
-            color: '#4a9eff',
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            color: 'rgba(255,255,255,0.85)',
           }}
           onMouseEnter={e => {
-            (e.target as HTMLElement).style.background = 'rgba(74,158,255,0.25)';
+            (e.target as HTMLElement).style.background = 'rgba(255,255,255,0.14)';
+            (e.target as HTMLElement).style.borderColor = 'rgba(255,255,255,0.3)';
           }}
           onMouseLeave={e => {
-            (e.target as HTMLElement).style.background = 'rgba(74,158,255,0.15)';
+            (e.target as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
+            (e.target as HTMLElement).style.borderColor = 'rgba(255,255,255,0.2)';
           }}
         >
           Найти

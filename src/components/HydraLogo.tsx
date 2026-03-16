@@ -25,17 +25,17 @@ const HydraLogo: React.FC<HydraLogoProps> = ({ size = 'md', showText = true }) =
         xmlns="http://www.w3.org/2000/svg"
         className="flex-shrink-0"
       >
-        <circle cx="40" cy="40" r="38" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-        <circle cx="40" cy="40" r="28" stroke="rgba(74,158,255,0.3)" strokeWidth="1" />
-        <circle cx="40" cy="40" r="6" fill="#4a9eff" opacity="0.9" />
-        <line x1="40" y1="12" x2="40" y2="22" stroke="#4a9eff" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
-        <line x1="40" y1="58" x2="40" y2="68" stroke="#4a9eff" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
-        <line x1="12" y1="40" x2="22" y2="40" stroke="#4a9eff" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
-        <line x1="58" y1="40" x2="68" y2="40" stroke="#4a9eff" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
-        <line x1="20" y1="20" x2="27" y2="27" stroke="rgba(74,158,255,0.4)" strokeWidth="1" strokeLinecap="round" />
-        <line x1="60" y1="20" x2="53" y2="27" stroke="rgba(74,158,255,0.4)" strokeWidth="1" strokeLinecap="round" />
-        <line x1="20" y1="60" x2="27" y2="53" stroke="rgba(74,158,255,0.4)" strokeWidth="1" strokeLinecap="round" />
-        <line x1="60" y1="60" x2="53" y2="53" stroke="rgba(74,158,255,0.4)" strokeWidth="1" strokeLinecap="round" />
+        <circle cx="40" cy="40" r="38" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
+        <circle cx="40" cy="40" r="28" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+        <circle cx="40" cy="40" r="6" fill="white" opacity="0.85" />
+        <line x1="40" y1="12" x2="40" y2="22" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="40" y1="58" x2="40" y2="68" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="12" y1="40" x2="22" y2="40" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="58" y1="40" x2="68" y2="40" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+        <line x1="20" y1="20" x2="27" y2="27" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round" />
+        <line x1="60" y1="20" x2="53" y2="27" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round" />
+        <line x1="20" y1="60" x2="27" y2="53" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round" />
+        <line x1="60" y1="60" x2="53" y2="53" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round" />
         <circle cx="40" cy="12" r="2.5" fill="white" opacity="0.6" />
         <circle cx="68" cy="40" r="2.5" fill="white" opacity="0.4" />
         <circle cx="40" cy="68" r="2.5" fill="white" opacity="0.4" />

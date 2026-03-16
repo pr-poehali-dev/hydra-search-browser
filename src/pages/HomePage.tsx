@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
       className="min-h-screen flex flex-col items-center justify-center px-4 py-20"
       style={{ background: 'var(--bg-deep)' }}
     >
-      {/* Background orbs */}
+      {/* Background orbs — very subtle white */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div
           className="absolute rounded-full"
@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
             top: '10%',
             left: '50%',
             transform: 'translateX(-50%)',
-            background: 'radial-gradient(circle, rgba(74,158,255,0.04) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.025) 0%, transparent 70%)',
           }}
         />
         <div
@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
             height: '300px',
             bottom: '20%',
             right: '10%',
-            background: 'radial-gradient(circle, rgba(74,158,255,0.03) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%)',
           }}
         />
       </div>
@@ -112,7 +112,17 @@ const HomePage: React.FC = () => {
           <button
             onClick={() => setCurrentPage('auth')}
             className="px-6 py-2.5 rounded-xl font-golos font-medium text-sm transition-all duration-200"
-            style={{ background: '#4a9eff', color: '#0a0a0a' }}
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.25)',
+              color: 'white',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.16)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)';
+            }}
           >
             Создать аккаунт
           </button>
@@ -120,9 +130,9 @@ const HomePage: React.FC = () => {
             onClick={() => setCurrentPage('auth')}
             className="px-6 py-2.5 rounded-xl font-golos text-sm transition-all duration-200"
             style={{
-              background: 'rgba(255,255,255,0.05)',
+              background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.7)',
+              color: 'rgba(255,255,255,0.6)',
             }}
           >
             Войти
@@ -145,18 +155,18 @@ const TrendingTag: React.FC<{ text: string }> = ({ text }) => {
       className="px-3 py-1.5 rounded-full font-golos text-xs transition-all duration-200"
       style={{
         background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        color: 'rgba(255,255,255,0.55)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        color: 'rgba(255,255,255,0.5)',
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.background = 'rgba(74,158,255,0.1)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(74,158,255,0.3)';
-        (e.currentTarget as HTMLElement).style.color = '#4a9eff';
+        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.09)';
+        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)';
+        (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)';
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-        (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.55)';
+        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
+        (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)';
       }}
     >
       {text}
@@ -169,18 +179,18 @@ const FeatureCard: React.FC<{ icon: string; label: string; desc: string }> = ({ 
     className="p-4 rounded-2xl flex flex-col gap-2 transition-all duration-300"
     style={{
       background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.06)',
+      border: '1px solid rgba(255,255,255,0.08)',
     }}
     onMouseEnter={e => {
-      (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
-      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
+      (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)';
+      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
     }}
     onMouseLeave={e => {
       (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)';
-      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
+      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
     }}
   >
-    <Icon name={icon} size={20} style={{ color: '#4a9eff' }} />
+    <Icon name={icon} size={20} style={{ color: 'rgba(255,255,255,0.6)' }} />
     <div>
       <div className="font-golos font-medium text-sm text-white">{label}</div>
       <div className="font-golos text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{desc}</div>
