@@ -32,20 +32,19 @@ const generateResults = (query: string): SearchResult[] => {
   }));
 };
 
-const imageKeywords = [
-  'nature', 'technology', 'space', 'city', 'abstract', 'science', 'ocean', 'mountain',
-  'forest', 'architecture', 'people', 'animals', 'art', 'food', 'travel', 'sports',
-];
-
 const generateImages = (query: string) => {
   return Array.from({ length: 20 }, (_, i) => ({
     id: i,
     url: `https://picsum.photos/seed/${encodeURIComponent(query)}-${i}/400/300`,
-    thumb: `https://picsum.photos/seed/${encodeURIComponent(query)}-${i}/200/150`,
     source: `example${i}.com`,
     title: `${query} — изображение ${i + 1}`,
   }));
 };
+
+interface BrowserTab {
+  url: string;
+  title: string;
+}
 
 const SearchPage: React.FC = () => {
   const { currentQuery, addSearchHistory, setCurrentPage } = useHydra();
@@ -56,6 +55,8 @@ const SearchPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [resultCount] = useState(() => Math.floor(Math.random() * 500000000) + 100000000);
   const [searchTime] = useState(() => (Math.random() * 0.5 + 0.1).toFixed(2));
+  const [browser, setBrowser] = useState<BrowserTab | null>(null);
+  const [browserLoading, setBrowserLoading] = useState(false);
 
   useEffect(() => {
     if (!currentQuery) return;
@@ -68,6 +69,18 @@ const SearchPage: React.FC = () => {
     }, 600);
     return () => clearTimeout(timer);
   }, [currentQuery]);
+
+  const openInBrowser = (url: string, title: string) => {
+    setBrowserLoading(true);
+    setBrowser({ url, title });
+    addSearchHistory({
+      query: currentQuery,
+      timestamp: new Date().toISOString(),
+      type: 'visit',
+      url,
+      title,
+    });
+  };
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'all', label: 'Все', icon: 'Globe' },
@@ -101,7 +114,7 @@ const SearchPage: React.FC = () => {
         {/* Tabs */}
         <div
           className="flex items-center gap-1 mb-6 p-1 rounded-xl w-fit animate-fade-up"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', opacity: 0, animationDelay: '50ms' }}
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', opacity: 0, animationDelay: '50ms' }}
         >
           {tabs.map(tab => (
             <button
@@ -119,7 +132,7 @@ const SearchPage: React.FC = () => {
               <Icon name={tab.icon} size={14} />
               {tab.label}
               {tab.id === 'ai' && (
-                <span className="text-xs px-1 rounded font-mono" style={{ background: 'rgba(74,158,255,0.2)', color: '#4a9eff', fontSize: '9px' }}>AI</span>
+                <span className="text-xs px-1 rounded font-mono" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', fontSize: '9px' }}>AI</span>
               )}
             </button>
           ))}
@@ -143,13 +156,7 @@ const SearchPage: React.FC = () => {
                   key={i}
                   result={r}
                   delay={i * 40}
-                  onVisit={() => addSearchHistory({
-                    query: currentQuery,
-                    timestamp: new Date().toISOString(),
-                    type: 'visit',
-                    url: r.url,
-                    title: r.title,
-                  })}
+                  onOpen={() => openInBrowser(r.url, r.title)}
                 />
               ))
             )}
@@ -170,7 +177,7 @@ const SearchPage: React.FC = () => {
                   <div
                     key={i}
                     className="break-inside-avoid rounded-xl overflow-hidden cursor-pointer transition-all duration-200 animate-fade-up"
-                    style={{ opacity: 0, animationDelay: `${i * 30}ms`, border: '1px solid rgba(255,255,255,0.06)' }}
+                    style={{ opacity: 0, animationDelay: `${i * 30}ms`, border: '1px solid rgba(255,255,255,0.07)' }}
                     onClick={() => setSelectedImage(img)}
                     onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = 'scale(1.02)'}
                     onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = 'scale(1)'}
@@ -184,26 +191,27 @@ const SearchPage: React.FC = () => {
             {selectedImage && (
               <div
                 className="fixed inset-0 z-50 flex items-center justify-center p-6"
-                style={{ background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(20px)' }}
+                style={{ background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(20px)' }}
                 onClick={() => setSelectedImage(null)}
               >
                 <div
-                  className="max-w-3xl w-full rounded-2xl overflow-hidden"
+                  className="max-w-3xl w-full rounded-2xl overflow-hidden animate-scale-in"
                   style={{ border: '1px solid rgba(255,255,255,0.1)' }}
                   onClick={e => e.stopPropagation()}
                 >
                   <img src={selectedImage.url} alt={selectedImage.title} className="w-full" />
-                  <div className="p-4" style={{ background: 'rgba(18,18,18,0.95)' }}>
-                    <p className="font-golos text-sm text-white/70 mb-2">{selectedImage.title}</p>
-                    <a
-                      href={`https://${selectedImage.source}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-golos text-xs"
-                      style={{ color: '#4a9eff' }}
+                  <div className="p-4 flex items-center justify-between" style={{ background: 'rgba(18,18,18,0.98)' }}>
+                    <div>
+                      <p className="font-golos text-sm text-white/70 mb-0.5">{selectedImage.title}</p>
+                      <p className="font-golos text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>{selectedImage.source}</p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedImage(null)}
+                      className="p-2 rounded-xl transition-colors"
+                      style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.5)' }}
                     >
-                      {selectedImage.source}
-                    </a>
+                      <Icon name="X" size={16} />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -214,11 +222,111 @@ const SearchPage: React.FC = () => {
         {activeTab === 'videos' && <ComingSoon label="Видео" icon="Play" />}
         {activeTab === 'news' && <ComingSoon label="Новости" icon="Newspaper" />}
       </div>
+
+      {/* Built-in browser overlay */}
+      {browser && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col animate-fade-in"
+          style={{ background: 'rgba(0,0,0,0.96)', backdropFilter: 'blur(40px)' }}
+        >
+          {/* Browser chrome */}
+          <div
+            className="flex items-center gap-3 px-4 h-12 flex-shrink-0"
+            style={{ background: 'rgba(18,18,18,0.98)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <button
+              onClick={() => setBrowser(null)}
+              className="p-1.5 rounded-lg transition-colors flex-shrink-0"
+              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'}
+            >
+              <Icon name="ArrowLeft" size={14} />
+            </button>
+
+            {/* URL bar */}
+            <div
+              className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-lg"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              <Icon name="Lock" size={11} style={{ color: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
+              <span className="font-mono text-xs truncate" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                {browser.url}
+              </span>
+            </div>
+
+            <button
+              onClick={() => setBrowser(null)}
+              className="p-1.5 rounded-lg flex-shrink-0 transition-colors"
+              style={{ color: 'rgba(255,255,255,0.4)' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'white'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.4)'}
+            >
+              <Icon name="X" size={16} />
+            </button>
+          </div>
+
+          {/* iframe */}
+          <div className="flex-1 relative">
+            {browserLoading && (
+              <div
+                className="absolute inset-0 flex items-center justify-center z-10"
+                style={{ background: 'var(--bg-deep)' }}
+              >
+                <div className="text-center">
+                  <div
+                    className="w-10 h-10 rounded-full border-2 border-transparent mx-auto mb-4 animate-spin"
+                    style={{ borderTopColor: 'rgba(255,255,255,0.5)' }}
+                  />
+                  <p className="font-golos text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>Загружаем страницу...</p>
+                  <p className="font-mono text-xs mt-1 truncate max-w-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>{browser.url}</p>
+                </div>
+              </div>
+            )}
+            <iframe
+              src={browser.url}
+              title={browser.title}
+              className="w-full h-full border-0"
+              onLoad={() => setBrowserLoading(false)}
+              onError={() => setBrowserLoading(false)}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            />
+          </div>
+
+          {/* X-Frame-Options fallback hint */}
+          <div
+            className="flex items-center justify-between px-4 py-2 flex-shrink-0"
+            style={{ background: 'rgba(10,10,10,0.9)', borderTop: '1px solid rgba(255,255,255,0.06)' }}
+          >
+            <div className="flex items-center gap-2">
+              <img
+                src={`https://www.google.com/s2/favicons?domain=${browser.url.replace('https://', '').split('/')[0]}&sz=16`}
+                alt=""
+                className="w-4 h-4 rounded-sm"
+                onError={e => (e.currentTarget.style.display = 'none')}
+              />
+              <span className="font-golos text-xs truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                {browser.title}
+              </span>
+            </div>
+            <button
+              onClick={() => window.open(browser.url, '_blank')}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg font-golos text-xs transition-colors"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'white'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)'}
+            >
+              <Icon name="ExternalLink" size={11} />
+              Открыть в браузере
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-const ResultCard: React.FC<{ result: SearchResult; delay: number; onVisit: () => void }> = ({ result, delay, onVisit }) => {
+const ResultCard: React.FC<{ result: SearchResult; delay: number; onOpen: () => void }> = ({ result, delay, onOpen }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -228,10 +336,11 @@ const ResultCard: React.FC<{ result: SearchResult; delay: number; onVisit: () =>
         opacity: 0,
         animationDelay: `${delay}ms`,
         background: hovered ? 'rgba(255,255,255,0.04)' : 'transparent',
-        border: `1px solid ${hovered ? 'rgba(255,255,255,0.08)' : 'transparent'}`,
+        border: `1px solid ${hovered ? 'rgba(255,255,255,0.09)' : 'transparent'}`,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onOpen}
     >
       <div className="flex items-center gap-2 mb-1.5">
         <img
@@ -242,19 +351,15 @@ const ResultCard: React.FC<{ result: SearchResult; delay: number; onVisit: () =>
         />
         <span className="font-golos text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>{result.domain}</span>
         <span className="font-mono text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>›</span>
-        <span className="font-golos text-xs truncate" style={{ color: 'rgba(255,255,255,0.25)' }}>{result.url.replace('https://', '')}</span>
+        <span className="font-golos text-xs truncate" style={{ color: 'rgba(255,255,255,0.22)' }}>{result.url.replace('https://', '')}</span>
       </div>
-      <a
-        href={result.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block font-golos font-medium text-base mb-1 hover:underline transition-colors"
-        style={{ color: '#4a9eff', lineHeight: '1.4' }}
-        onClick={onVisit}
+      <p
+        className="font-golos font-medium text-base mb-1 transition-colors"
+        style={{ color: hovered ? 'white' : 'rgba(255,255,255,0.85)', lineHeight: '1.4' }}
       >
         {result.title}
-      </a>
-      <p className="font-golos text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+      </p>
+      <p className="font-golos text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
         {result.description}
       </p>
     </div>
